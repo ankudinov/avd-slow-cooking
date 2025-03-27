@@ -63,6 +63,17 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
 
 ---
 
+# Agenda
+
+- What is AVD
+- Environment
+- How to structure your inventory
+- Life quality improvements
+
+![bg left](img/pexels-suzy-hazelwood-1226398.jpg)
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
