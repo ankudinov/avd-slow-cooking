@@ -118,6 +118,43 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
 
 ---
 
+# AVD Installation Options
+
+<style scoped>section {font-size: 24px;}</style>
+
+<div class="columns">
+<div>
+
+- Ansible CE (Community Edition)
+  - free to use
+  - check [AVD docs](https://avd.arista.com/) for the installation manual
+- Ansible Automation Platform
+  - paid RedHat support
+  - check [AAP guide here](https://avd.arista.com/devel/docs/getting-started/avd-aap.html)
+  - out of scope
+
+</div>
+<div>
+
+After 4.9 (PyAVD is the foundation ⚠️)
+
+```bash
+# ansible-core will be installed as PyAVD requirement
+pip install "pyavd[ansible]"
+ansible-galaxy collection install arista.avd
+# install community.general to support callback plugins, etc.
+ansible-galaxy collection install community.general
+```
+
+- PyAVD is not intended to be used directly for customer projects
+- If you have [an exception](https://github.com/arista-netdevops-community/CloudVisionPortal-Examples/tree/master/pyavd_examples) - this workshop is not for you. You know what to do 🤓 or have Arista PS support
+- Ansible provides a lot of value, for ex. inventory management - use Ansible❗
+
+</div>
+</div>
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
