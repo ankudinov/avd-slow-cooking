@@ -23,6 +23,7 @@ jobs:
 
       - name: Build Directories and Copy images 🖼️
         run: |
+          mkdir site \
           mkdir site/slides \
           && mkdir site/pdfs \
           && cp -R slides/img site/slides/img
