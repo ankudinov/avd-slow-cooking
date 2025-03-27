@@ -146,9 +146,9 @@ ansible-galaxy collection install arista.avd
 ansible-galaxy collection install community.general
 ```
 
-- PyAVD is not intended to be used directly for customer projects
+- ⚠️ [PyAVD](https://pypi.org/project/pyavd/) is not intended to be used directly for customer projects
 - If you have [an exception](https://github.com/arista-netdevops-community/CloudVisionPortal-Examples/tree/master/pyavd_examples) - this workshop is not for you. You know what to do 🤓 or have Arista PS support
-- Ansible provides a lot of value, for ex. inventory management - use Ansible❗
+- Ansible provides a lot of value, for ex. inventory management - use Ansible ⚠️
 
 </div>
 </div>
