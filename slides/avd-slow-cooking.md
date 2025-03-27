@@ -94,6 +94,30 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
 
 ---
 
+# Open Source: What to Expect
+
+<style scoped>section {font-size: 16px;}</style>
+
+![bg right w:600 opacity:85%](img/baby-crying-for-feature.png)
+
+- Pros:
+  - free to use
+  - very agile and active community can outperform every alternative
+  - open to any [feedback](https://github.com/aristanetworks/avd/discussions), [bug reports and feature requests](https://github.com/aristanetworks/avd/issues)
+- Cons:
+  - no direct revenue
+    - no ads and sponsor buttons in AVD 🤑
+    - core contibutors are working for Arista
+  - best effort support by default
+    - everything can be done - but it's not polite to ask when
+    - customers have an option to <ins>buy Arista TAC support for AVD</ins> or Arista PS
+- Help the community:
+  - be part of the community - contribute ❗
+  - understand the rules of the game
+  - <ins>buy AVD support</ins> when you can or have higher requirements
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
