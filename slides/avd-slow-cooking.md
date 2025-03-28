@@ -155,6 +155,23 @@ ansible-galaxy collection install community.general
 
 ---
 
+# How to Cook AVD Inventory
+
+<style scoped>section {font-size: 22px;}</style>
+
+![bg right](img/pexels-cottonbro-4253320.jpg)
+
+- Be structured.
+- Craft your environment and confirm that it works with some basic test.
+- Create a minimalistic inventory and generate first configs.
+- Grow your environment slowly, keep it clean and easy to read. Avoid workarounds.
+- When required - step back to the last working setup
+- Iterate
+- Cloning existing repo and adjusting to the new setup is not always a good idea.
+  - Make sure that you understand every single knob in the cloned inventory
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
