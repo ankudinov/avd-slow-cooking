@@ -118,6 +118,21 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
 
 ---
 
+# Tools and Prerequsites
+
+<!-- ![bg opacity:30%](img/pexels-pixabay-33242.jpg) -->
+![bg right fit](img/pexels-pixabay-33242.jpg)
+
+- Check [ATD automation workshop](https://labguides.testdrive.arista.com/2024.3/automation/overview/)
+- Git / GitHub
+  - check [git-scm book](https://git-scm.com/book/en/v2)
+  - [GitHub Git cheatsheet](https://education.github.com/git-cheat-sheet-education.pdf)
+- [VSCode](https://code.visualstudio.com/docs)
+- Containers
+  - [container.training](https://container.training/) can be a good start
+
+---
+
 # AVD Installation Options
 
 <style scoped>section {font-size: 24px;}</style>
@@ -199,6 +214,8 @@ ansible-galaxy collection install community.general
 
 # Keep Your AVD Environment Clean
 
+<style scoped>section {font-size: 24px;}</style>
+
 <!-- Do not add page number on this slide -->
 <!--
 class: default
@@ -207,6 +224,7 @@ class: default
 ![bg](img/pexels-goumbik-349609.jpg)
 
 - ⛔ NEVER use "handcrafted" installation direclty on your machine. It will break! Troubleshooting that is wasted time. ⏱️ → 🗑️
+- ⛔ NEVER use root account!
 - Feasible options:
   - Dedicated and well maintained VM
   - Virtual environment
@@ -295,6 +313,7 @@ Containers 🐳
 ```bash
 # Ansible collection setup
 ansible --version
+# check collections versions and install location
 ansible-galaxy collection list
 which ansible
 # requirements
@@ -314,6 +333,8 @@ whoami
 id -u
 id -g
 echo ${HOME}
+# check the PATH
+echo ${PATH}
 ```
 
 </div>
