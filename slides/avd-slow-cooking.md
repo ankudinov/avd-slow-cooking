@@ -208,8 +208,11 @@ class: default
 
 - ⛔ NEVER use "handcrafted" installation direclty on your machine. It will break! Troubleshooting that is wasted time. ⏱️ → 🗑️
 - Feasible options:
+  - Dedicated and well maintained VM
   - Virtual environment
   - Containers
+    - AVD container images are in preview: fully functional, but breaking changes can happen any time
+    - No Arista TAC support possible for customers who ordered AVD support
   - AnsibleEEs
     - This one is for RedHat support 💵
 
@@ -253,6 +256,65 @@ Containers 🐳
     - check [this document](https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user) to UID requirements
   - broken Docker installation or host OS
   - tools can be "too heavy" for some users 🔨
+
+</div>
+</div>
+
+---
+
+# Environment Troubleshooting Cheatsheet
+
+<style scoped>section {font-size: 24px;}</style>
+
+<div class="columns">
+<div>
+
+- PyAVD is critical in latest AVD versions
+
+  ```bash
+  pip freeze | grep pyavd
+  ```
+
+- You can encounter Ansible "world writable directory" error in CI, remote containers, etc. due to very relaxed permissions and [Ansible thinking it's not secure](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#avoiding-security-risks-with-ansible-cfg-in-the-current-directory). Fix:
+
+  ```bash
+  $ printenv | grep ANSIBLE
+  ANSIBLE_CONFIG=ansible.cfg
+  ```
+
+- Confirm that your environment is not isolated
+
+  ```bash
+  curl --user <login>:<password> --data "show version"
+  --insecure https://<switch-mgmt-ip>:443/command-api --verbose
+  ```
+
+</div>
+<div>
+
+```bash
+# Ansible collection setup
+ansible --version
+ansible-galaxy collection list
+which ansible
+# requirements
+pip3 freeze
+python3.XX -m pip freeze # may not be the same
+# and where to find them
+pip --version
+python3 -c "import ansible as _; print(_.__file__)"
+# python
+python3 --version
+which python
+which python3
+which python3.XX
+python3.11 -c "import sys;print(sys.path)"
+# user
+whoami
+id -u
+id -g
+echo ${HOME}
+```
 
 </div>
 </div>
