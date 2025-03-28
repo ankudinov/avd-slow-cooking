@@ -172,6 +172,93 @@ ansible-galaxy collection install community.general
 
 ---
 
+# AVD Repository Building Blocks
+
+<style scoped>section {font-size: 20px;}</style>
+
+![bg right](img/pexels-isaiah-56332-833109.jpg)
+
+- Environment
+- ansible.cfg
+- inventory
+- variables
+- playbooks
+- life quality improvements
+  - shortcuts
+  - useful hacks
+
+---
+
+`Step 1`
+
+# Environment
+
+![bg left:40%](img/pexels-hissetmehurriyeti-47135946-7560118.jpg)
+
+---
+
+# Keep Your AVD Environment Clean
+
+<!-- Do not add page number on this slide -->
+<!--
+class: default
+-->
+
+![bg](img/pexels-goumbik-349609.jpg)
+
+- ⛔ NEVER use "handcrafted" installation direclty on your machine. It will break! Troubleshooting that is wasted time. ⏱️ → 🗑️
+- Feasible options:
+  - Virtual environment
+  - Containers
+  - AnsibleEEs
+    - This one is for RedHat support 💵
+
+---
+
+# Virtual Environment vs Containers
+
+<!-- Do not add page number on this slide -->
+<!--
+class: invert
+-->
+
+<style scoped>section {font-size: 22px;}</style>
+
+<div class="columns">
+<div>
+
+venv/pyenv 📦
+
+- Pro:
+  - simple and lightweight
+  - no special tools required
+- Breaks **often**. Troubleshooting complexity: **average**
+- How it breaks:
+  - multiple Pythons
+  - incorrect requirements installation
+  - broken path, custom ansible.cfg, tweaks, etc.
+  - `../../../<ansible-collection>` 🤦 🙈
+
+</div>
+<div>
+
+Containers 🐳
+
+- Pro:
+  - stable, portable
+  - high level of isolation
+- Breaks **rarely**. Troubleshooting complexity: **high**
+- How it breaks:
+  - permission issues 👑
+    - check [this document](https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user) to UID requirements
+  - broken Docker installation or host OS
+  - tools can be "too heavy" for some users 🔨
+
+</div>
+</div>
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
