@@ -223,7 +223,7 @@ class: default
 
 ![bg](img/pexels-goumbik-349609.jpg)
 
-- ⛔ NEVER use "handcrafted" installation direclty on your machine. It will break! Troubleshooting that is wasted time. ⏱️ → 🗑️
+- ⛔ NEVER use "handcrafted" installation direclty on your machine. [It will break](https://xkcd.com/1987/)! Troubleshooting that is wasted time. ⏱️ → 🗑️
 - ⛔ NEVER use root account!
 - Feasible options:
   - Dedicated and well maintained VM
