@@ -481,6 +481,117 @@ echo ${PATH}
 
 ---
 
+`Step 2`
+
+# ansible.cfg and Inventory
+
+![bg left:40%](img/pexels-cottonbro-4057737.jpg)
+
+---
+
+# Keep Your `ansible.cfg` Small
+
+```text
+[defaults]
+inventory = inventory.yml
+jinja2_extensions =  jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+```
+
+> WARNING: If you need longer ansible.cfg - your environment is likely suboptimal.
+
+- Avoid custom collection path, etc. when you don't need it.
+- Avoid any kind of relative path, like `../..`
+- Test your installation and .cfg on different machines and make sure it works.
+
+---
+
+# Inventory Structure
+
+<style scoped>section {font-size: 17px;}</style>
+
+![bg right fit](img/ansible-repo-struct.png)
+
+- Keep inventory structured and readable
+  - `all` -> group -> subgroup -> hosts
+  - Avoid too many groups. Add if required to structure variables
+- Avoid vars in the inventory
+  - some short and widely shared setings, like switch type can be part of the inventory
+- When lost in your inventory vars:
+
+  ```bash
+  ansible-inventory --list
+  ansible-inventory --list --yaml
+  ansible-inventory --host <host>
+  ```
+
+- [Parent/child groups](https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#grouping-groups-parent-child-group-relationships) to improve the var structure
+
+  ```yaml
+  AVD_FABRIC_ENDPOINTS:
+      children:
+        AVD_FABRIC_LEAFS:
+  ```
+
+---
+
+# AVD Inventory Graph
+
+<div class="columns">
+<div>
+
+- It's increadibly important to understand the structure of you inventory
+- Plan it well
+- Visualize with `--graph` when lost
+- Get relevant vars with:
+ `ansible-inventory --host <host>`
+
+</div>
+<div>
+
+```d
+$ ansible-inventory --graph
+@all:
+  |--@ungrouped:
+  |--@AVD_FABRIC:
+  |  |--@AVD_FABRIC_SPINES:
+  |  |  |--s01
+  |  |  |--s02
+  |  |--@AVD_FABRIC_LEAFS:
+  |  |  |--@pod0:
+  |  |  |  |--l01
+  |  |  |  |--l02
+```
+
+</div>
+</div>
+
+---
+
+# Hands-on: Remove Some Groups
+
+<style scoped>section {font-size: 16px;}</style>
+
+![bg right:20%](img/demo-time.jpeg)
+
+```bash
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
+  '.all.children.FABRIC.children.DC1.children.DC1_SPINES.vars.type = "spine"' \
+  inventory.yml
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
+  '.all.children.FABRIC.children.DC1.children.DC1_L3_LEAVES.vars.type = "l3leaf"' \
+  inventory.yml
+docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
+  '.all.children.FABRIC.children.DC1.children.DC1_L2_LEAVES.vars.type = "l2leaf"' \
+  inventory.yml
+rm group_vars/DC1_SPINES.yml
+rm group_vars/DC1_L3_LEAVES.yml
+rm group_vars/DC1_L2_LEAVES.yml
+```
+
+> Verify you inventory and check `printenv | grep ANSIBLE`.
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
