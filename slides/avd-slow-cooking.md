@@ -371,7 +371,7 @@ docker run hello-world
 
 <style scoped>section {font-size: 20px;}</style>
 
-![bg right:33%](img/demo-time.jpeg)
+![bg right:20%](img/demo-time.jpeg)
 
 - Check [available AVD images](https://github.com/aristanetworks/avd/pkgs/container/avd%2Funiversal)
 - Start AVD container in interactive mode:
@@ -393,6 +393,29 @@ docker run hello-world
 - You can exit container any time with `exit` command
 
 > ⚠️ The data is not persistent without bind mount or volume `-v` and will be lost on exit. However this keeps environment clean and simple on start.
+
+---
+
+# Install AVD Examples
+
+<style scoped>section {font-size: 24px;}</style>
+
+![bg right:20%](img/demo-time.jpeg)
+
+- AVD collection has number of build-in and [well documented](https://avd.arista.com/5.2/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html) examples
+- This is the best way to start playing with AVD any time and anywhere
+- We'll start with "Single DC L3LS" example
+- Copy the example inventory files to your container workspace:
+
+  ```bash
+  avd ➜ ~ $ cp -r /home/avd/.ansible/collections/ansible_collections/arista/avd/examples/single-dc-l3ls/* .
+  avd ➜ ~ $ ls
+  README.md  ansible.cfg  build.yml  deploy-cvp.yml  deploy.yml  documentation  group_vars  images  intended  inventory.yml  switch-basic-configurations
+  ```
+
+- You can also use `ansible-playbook arista.avd.install_examples`, but `cp` is faster and more straighforward when you know AVD install path
+
+> 💡 You can use this approach in any non-containerized and working AVD environment to get start experimenting quickly. However make sure that your enviroment fits the inventory ansible.cfg, etc.
 
 ---
 
