@@ -392,6 +392,8 @@ docker run hello-world
 
 - You can exit container any time with `exit` command
 
+> ⚠️ The data is not persistent without bind mount or volume `-v` and will be lost on exit. However this keeps environment clean and simple on start.
+
 ---
 
 # Environment Troubleshooting Cheatsheet
