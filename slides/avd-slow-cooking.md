@@ -567,6 +567,12 @@ $ ansible-inventory --graph
 
 ---
 
+# JSON and YAML Query
+
+
+
+---
+
 # Hands-on: Remove Some Groups
 
 <style scoped>section {font-size: 16px;}</style>
