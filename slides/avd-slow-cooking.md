@@ -304,7 +304,7 @@ Containers 🐳
 
 ---
 
-# Install Docker CE on Linux
+# Linux: Install Docker CE
 
 <style scoped>section {font-size: 24px;}</style>
 
@@ -336,6 +336,31 @@ docker run hello-world
 
 </div>
 </div>
+
+---
+
+# Windows: Install WSL2 + ![img h:50](img/docker-logo-blue.png)
+
+- Install WSL2
+  - Check if default Ubuntu distribution is installed
+  - Windows will ask to restart the PC 😉
+- Install VSCode if not yet installed
+- Install remote development extension on VSCode: `ms-vscode-remote.vscode-remote-extensionpack`
+- On the first run VSCode will suggest to install Docker in WSL - accept
+
+> You can install Docker CE on WSL2 machine directly, but VSCode is a better option
+
+---
+
+# MacOS: Install ![podman h:100](img/podman-logo-full-vert.png) Desktop
+
+- Check [installation docs](https://podman-desktop.io/docs/installation)
+- [Download Podman Desktop here](https://podman-desktop.io/downloads)
+  - Alternative option - [Homebrew](https://formulae.brew.sh/formula/podman)
+- Once Podman Desktop is installed - create Podman machine
+  - <mark><ins>__rootful Podman machine❗__</ins></mark> preferred for a lab
+
+![bg right:33% fit](img/podman-machine.png)
 
 ---
 
