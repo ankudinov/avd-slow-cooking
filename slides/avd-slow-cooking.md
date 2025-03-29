@@ -280,6 +280,65 @@ Containers 🐳
 
 ---
 
+# AVD Lab Environment: Options
+
+<style scoped>section {font-size: 24px;}</style>
+
+![bg right:33%](img/demo-time.jpeg)
+
+- Linux
+  - Docker CE
+  - [Install directly](https://avd.arista.com/5.2/docs/installation/collection-installation.html)
+
+    ```bash
+    pip install "pyavd[ansible]"
+    ansible-galaxy collection install arista.avd
+    ```
+
+- Windows
+  - WSL2 + Docker CE
+- MacOS
+  - Podman
+
+⚠️ Use a well maintained and healthy machine!
+
+---
+
+# Install Docker CE on Linux
+
+<style scoped>section {font-size: 24px;}</style>
+
+<div class="columns">
+<div>
+
+> The install process was tested on Ubuntu LTS
+
+1. Install Docker on the host. You can used one-liner script for that. [Check Docker documentation](https://docs.docker.com/engine/install/ubuntu/) for details.
+2. Add your user to the `docker` group.
+3. Logout and login again to apply the changes.
+4. Check the Docker version and run hello-world container to test functionality.
+5. You must be able to run docker commands without sudo if the installation was succesful.
+
+</div>
+<div>
+
+```bash
+# install Docker
+sudo curl -fsSL https://get.docker.com | sh
+# add user to the docker group
+sudo usermod -aG docker ${USER}
+# test docker
+docker --version
+docker run hello-world
+```
+
+![img](img/docker-logo-blue.png)
+
+</div>
+</div>
+
+---
+
 # Environment Troubleshooting Cheatsheet
 
 <style scoped>section {font-size: 24px;}</style>
