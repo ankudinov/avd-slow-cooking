@@ -369,16 +369,21 @@ docker run hello-world
 
 # Start AVD Environment
 
-<style scoped>section {font-size: 20px;}</style>
+<style scoped>section {font-size: 18px;}</style>
 
 ![bg right:20%](img/demo-time.jpeg)
 
 - Check [available AVD images](https://github.com/aristanetworks/avd/pkgs/container/avd%2Funiversal)
-- Start AVD container in interactive mode:
+- Set alias:
 
   ```bash
   # use ~/.bashrc if ZSH is not installed
-  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh"' >> ~/.zshrc
+  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh -c \"wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/Makefile;zsh\""' >> ~/.zshrc
+  ```
+
+- Start AVD container in interactive mode:
+
+  ```bash
   avd
   ```
 
@@ -393,6 +398,25 @@ docker run hello-world
 - You can exit container any time with `exit` command
 
 > ⚠️ The data is not persistent without bind mount or volume `-v` and will be lost on exit. However this keeps environment clean and simple on start.
+
+---
+
+# Makefile
+
+<style scoped>section {font-size: 24px;}</style>
+
+- If you need a deeper dive into Makefile syntax and use case - the [makefiletutorial.com](https://makefiletutorial.com/) is the best place to start. You'll be an expert in making Makefiles when you finish. :sunglasses:
+- Originally Makefiles were used by C/C++ developers to compile the code.
+- Makefiles have a few advantages that make them useful for other use cases:
+  - They are simple.
+  - They allow assigning a simple shortcut to complex actions.
+  - They are available by default on most Linux distributions.
+- We are going to use Makefile to create shortcuts to simplify some operations.
+- Get Makefile for this workshop now:
+
+```bash
+wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/Makefile
+```
 
 ---
 
@@ -569,7 +593,7 @@ $ ansible-inventory --graph
 
 # JSON and YAML Query
 
-
+g
 
 ---
 
