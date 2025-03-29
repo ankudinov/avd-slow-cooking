@@ -359,8 +359,38 @@ docker run hello-world
   - Alternative option - [Homebrew](https://formulae.brew.sh/formula/podman)
 - Once Podman Desktop is installed - create Podman machine
   - <mark><ins>__rootful Podman machine❗__</ins></mark> preferred for a lab
+- Check `podman run hello`
+- Set `alias docker=podman`
+  - future slides will be referring to `docker` assuming this alias
 
 ![bg right:33% fit](img/podman-machine.png)
+
+---
+
+# Start AVD Environment
+
+<style scoped>section {font-size: 20px;}</style>
+
+![bg right:33%](img/demo-time.jpeg)
+
+- Check [available AVD images](https://github.com/aristanetworks/avd/pkgs/container/avd%2Funiversal)
+- Start AVD container in interactive mode:
+
+  ```bash
+  # use ~/.bashrc if ZSH is not installed
+  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh"' >> ~/.zshrc
+  avd
+  ```
+
+- Check installed Ansible collections:
+
+  ```bash
+  avd ➜ ~ $ ansible-galaxy collection list | grep avd
+  # /home/avd/.ansible/collections/ansible_collections
+  arista.avd        5.2.3
+  ```
+
+- You can exit container any time with `exit` command
 
 ---
 
