@@ -12,3 +12,12 @@ example-l3ls: ## copy AVD single DC l3ls example to the current directory
 install-yq: ## Install yq tool
 	@sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
 	@sudo chmod +x /usr/bin/yq
+
+.PHONY: git-init
+git-init: ## init new git repo
+	wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/.gitignore
+	git init
+	git config --global user.email "avd@lab.net"
+	git config --global user.name "AVD lab user"
+	git add .
+	git commit -m .

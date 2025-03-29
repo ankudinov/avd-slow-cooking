@@ -432,6 +432,7 @@ wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/mas
 - Copy the example inventory files to your container workspace:
 
   ```bash
+  # you can use `make example-l3ls` instead
   avd ➜ ~ $ cp -r /home/avd/.ansible/collections/ansible_collections/arista/avd/examples/single-dc-l3ls/* .
   avd ➜ ~ $ ls
   README.md  ansible.cfg  build.yml  deploy-cvp.yml  deploy.yml  documentation  group_vars  images  intended  inventory.yml  switch-basic-configurations
@@ -593,7 +594,34 @@ $ ansible-inventory --graph
 
 # JSON and YAML Query
 
-g
+<div class="columns">
+<div>
+
+- `jq` is a lightweight and flexible command-line JSON processor
+- Often installed by default
+- Example:
+
+  ```bash
+  echo '{"fruit": "Apple","size": "Large","color": "Red"}' | jq ".fruit"
+  ```
+
+- Check the [docs](https://jqlang.org/)
+
+</div>
+<div>
+
+- `yq` - similar to `jq`, but supports YAML
+- Install with: `make install-yq`
+- Example:
+
+  ```bash
+  cat inventory.yml | yq '.. | select(key=="DC1_SPINES")'
+  ```
+
+- Check the [docs](https://mikefarah.gitbook.io/yq)
+
+</div>
+</div>
 
 ---
 
