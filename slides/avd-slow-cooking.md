@@ -1057,6 +1057,62 @@ rm group_vars/CONNECTED_ENDPOINTS.yml
 
 ---
 
+<style scoped>section {font-size: 18px;}</style>
+
+# Ansible Inventory for Multiple Network Segments
+
+- Very often there is a need to build multiple networks with AVD. For example, multiple DCs or L3LS EVPN and L2LS management network.
+- There are 2 possible options:
+  - Create a dedicated repository for each network
+  - Create a single repository for multiple networks
+- Ansible repository is flexible and allows both options
+- Both options are valid. Pick any according to your priorities.
+- Always plan the structure of your inventory well!
+- If a single inventory is used for multiple networks, create a dedicated Ansible group for each network segment and adjust playbooks accordingly.
+
+  ```yaml
+  ---
+  # playbooks/avd-build-dc2.yml
+  - name: Build configs for DC2
+    hosts: DC2_FABRIC
+  ...
+  ```
+
+---
+
+# Single vs Multiple Repositories
+
+<style scoped>section {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+Single Repository
+
+- Advantages
+  - Single source of truth to store all data
+  - Allows sharing variables
+  - Simple to maintain due to single point of control
+  - No need to duplicate CIs, playbooks, Makefiles, etc.
+  - "One ring to rule them all" concept. :ring:
+- Disadvantages
+  - Mistakes can have higher impact.
+  - If the ring is burned, everything is gone. 🌋
+
+</div>
+<div>
+
+Multiple Repositories Advantages
+
+- Some structures are duplicated and overall can be more complex to maintain
+- Mistakes are isolated and have lower impact
+- Changes in one environnement can not affect another environment directly
+
+</div>
+</div>
+
+---
+
 # eos_cli
 
 <style scoped>section {font-size: 18px;}</style>
