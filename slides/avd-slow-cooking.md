@@ -1115,7 +1115,45 @@ Multiple Repositories Advantages
 
 ---
 
+# Scripts and Tools to Work with Complex Data
 
+<style scoped>section {font-size: 16px;}</style>
+
+- Possibilities are endless. We are only going to touch basics.
+- When building sophisticated tools, be sure you know how to support them in future.
+- JSON is a better data format for script assisted ops.
+- Let's do some basic tests with `yq` tool.
+  - 1st, create following YAML file called `test.yml`:
+
+  ```yaml
+  ---
+  dc1-leaf1-endpoints:
+  - name: scripted-host
+    rack: pod1
+    adapters:
+      - switch_ports: [Ethernet12, Ethernet12]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        mode: access
+        vlans: 22
+        port_channel:
+          description: PortChannel
+          mode: active
+  ```
+  
+  ```bash
+  # inspect the result of merging 2 files
+  yq ea '. as $item ireduce ({}; . *+ $item )' group_vars/CONNECTED_ENDPOINTS/dc1-leaf1-endpoints.yml test.yml
+  # update ATD_SERVERS.yml with an additional server
+  yq ea --inplace '. as $item ireduce ({}; . *+ $item )' group_vars/CONNECTED_ENDPOINTS/dc1-leaf1-endpoints.yml test.yml
+  ```
+
+---
+
+# AVD, CloudVision and Netbox
+
+![bg right:25%](img/demo-time.jpeg)
+<!-- ![demo](img/avd-codespace-demo-recording.gif) -->
+<iframe width="840" height="472" src="https://www.youtube.com/embed/S6PC2WQ8xrY?si=BUT4aFbyH0IUjMLb" title="AVD and Netbox" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 ---
 
