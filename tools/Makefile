@@ -19,5 +19,6 @@ git-init: ## init new git repo
 	git init
 	git config --global user.email "avd@lab.net"
 	git config --global user.name "AVD lab user"
+	git add .gitignore
 	git add *
 	git commit -m .
