@@ -1032,6 +1032,75 @@ rm group_vars/CONNECTED_ENDPOINTS.yml
 
 ---
 
+# Troubleshooting AVD Inventory
+
+<style scoped>section {font-size: 22px;}</style>
+
+![bg right](img/pexels-pixabay-70842.jpg)
+
+- If your 10'000 lines inventory breaks - cut the last 5000 you just added
+- Never have hundreds of uncommitted files
+- Don't work as root! NEVER!
+- Always check and understand your environment
+- When things break:
+  - open TAC case if you ordered AVD support (order now 🛒)
+  -OR-
+  - create an issue on Github after initial troubleshooting
+
+---
+
+# Troubleshooting Beyond -vvv
+
+<style scoped>section {font-size: 22px;}</style>
+
+![bg right:30% fit](img/ansible-vvv-dalle.jpeg)
+
+- We all love Ansible `-vvv` 😄
+- A life changing trick:
+
+  - have a container
+  - open and run the playbook in VSCode
+  - `Cmd + Click` (Mac users) on a cryptic error message
+    ![cmd-click w:700](img/error-cmd-click.png)
+  - Change your code
+    ![change-code w:700](img/container-code-change.png)
+  - Get a meaningful error message
+
+    ```text
+    error='rpc error: code = PermissionDenied desc = user cannot write tag assignments they do not own'
+    ```
+
+---
+
+# eos_cli
+
+<style scoped>section {font-size: 20px;}</style>
+
+- There is nothing wrong in using `eos_cli` for certain cases.
+- But:
+  - keep it very limited
+  - make your life easier by not coding plain text in YAML
+
+  ```yaml
+  # reconcile static configs
+  static_config_filename: "/workspaces/ion-market-factory-poc/avd_inventory/static-configs/{{ inventory_hostname }}.txt"
+  eos_cli: "{{ lookup('ansible.builtin.file', static_config_filename) }}"
+  ```
+
+  > WARNING: the example above will fail if using PyAVD only.
+
+- Same considerations valid for `custom_structured_configuration_`. The most weird field example I've seen is starting breakout configuration from /4 🤦:
+
+  ```yaml
+  custom_structured_configuration_ethernet_interfaces:
+    - name: Ethernet12/1
+      speed: forced 25gfull
+  ```
+
+- However if you need a lot of `eos_cli` or `custom_structured_configuration_` tweaks in your inventory - **ALWAYS** create an issue on Github.
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
