@@ -632,19 +632,15 @@ $ ansible-inventory --graph
 ![bg right:20%](img/demo-time.jpeg)
 
 ```bash
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
-  '.all.children.FABRIC.children.DC1.children.DC1_SPINES.vars.type = "spine"' \
-  inventory.yml
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
-  '.all.children.FABRIC.children.DC1.children.DC1_L3_LEAVES.vars.type = "l3leaf"' \
-  inventory.yml
-docker run --rm -v "${PWD}":/workdir mikefarah/yq -i \
-  '.all.children.FABRIC.children.DC1.children.DC1_L2_LEAVES.vars.type = "l2leaf"' \
-  inventory.yml
+yq -i '.all.children.FABRIC.children.DC1.children.DC1_SPINES.vars.type = "spine"' inventory.yml
+yq -i '.all.children.FABRIC.children.DC1.children.DC1_L3_LEAVES.vars.type = "l3leaf"' inventory.yml
+yq -i '.all.children.FABRIC.children.DC1.children.DC1_L2_LEAVES.vars.type = "l2leaf"' inventory.yml
 rm group_vars/DC1_SPINES.yml
 rm group_vars/DC1_L3_LEAVES.yml
 rm group_vars/DC1_L2_LEAVES.yml
 ```
+
+- You can use `make example-rm-groups` shortcut for that.
 
 > Verify you inventory and check `printenv | grep ANSIBLE`.
 
