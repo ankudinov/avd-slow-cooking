@@ -96,9 +96,9 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
 
 # Open Source: What to Expect
 
-<style scoped>section {font-size: 16px;}</style>
+<style scoped>section {font-size: 18px;}</style>
 
-![bg right w:600 opacity:85%](img/baby-crying-for-feature.png)
+![bg right:38%](img/pexels-markus-winkler-1430818-19856614.jpg)
 
 - Pros:
   - free to use
@@ -115,6 +115,18 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
   - be part of the community - contribute ❗
   - understand the rules of the game
   - <ins>buy AVD support</ins> when you can or have higher requirements
+
+---
+
+# Short AVD Workflow Demo
+
+<style scoped>section {font-size: 20px;}</style>
+
+![bg right:25%](img/demo-time.jpeg)
+<!-- ![demo](img/avd-codespace-demo-recording.gif) -->
+<iframe width="840" height="472" src="https://www.youtube.com/embed/1J6LbFpt_Qs?si=5PVplVjcG12aMpZV" title="Short AVD Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[Click here to access the demo](https://arista-netdevops-community.github.io/one-click-se-demos/cvaas-cvaas-and-avd-demo--evpn-mlag/cvaas-cvaas-and-avd-demo--evpn-mlag/)
 
 ---
 
@@ -367,7 +379,7 @@ docker run hello-world
 
 ---
 
-# Start AVD Environment
+# Start AVD Environment in CLI
 
 <style scoped>section {font-size: 18px;}</style>
 
@@ -378,7 +390,7 @@ docker run hello-world
 
   ```bash
   # use ~/.bashrc if ZSH is not installed
-  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh -c \"mkdir playground;cd playground;wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/Makefile\?timestamp\=$(date +"%s") -O Makefile;zsh\""' >> ~/.zshrc
+  echo 'alias avd="docker run --rm -it -v avd-playground:/home/avd/playground -w /home/avd/playground ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3"' >> ~/.zshrc
   ```
 
 - Start AVD container in interactive mode:
@@ -397,7 +409,39 @@ docker run hello-world
 
 - You can exit container any time with `exit` command
 
-> ⚠️ The data is not persistent without bind mount or volume `-v` and will be lost on exit. However this keeps environment clean and simple on start.
+> ⚠️ To start fresh delete the volume: `docker volume rm avd-playground`
+
+---
+
+# Create AVD Environment in VSCode
+
+<style scoped>section {font-size: 18px;}</style>
+
+![bg right:40% fit](img/architecture-containers.png)
+
+- To simplify your life open AVD environment in a [dev container using VSCode](https://code.visualstudio.com/docs/devcontainers/containers)
+- Use the following snippet in your terminal:
+
+```bash
+# create devcontainer.json
+mkdir -p avd-playground/.devcontainer
+cat <<EOF > avd-playground/.devcontainer/devcontainer.json
+{
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3",
+    "remoteUser": "avd",
+    "onCreateCommand": "mkdir -p /home/avd/playground",
+    "workspaceFolder": "/home/avd/playground",
+    "workspaceMount": "source=avd-playground,target=/home/avd/playground,type=volume"
+}
+EOF
+# start the AVD environment in VSCode
+cd avd-playground
+code .
+```
+
+- Click `Reopen in Container` button or use VSCode command pallete to find `Dev Container: Reopen in Container`
+
+> 💡 if `code .` not working, open [VSCode command pallete](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) and find and use "Install `code` command in the PATH"
 
 ---
 
@@ -432,7 +476,7 @@ wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/mas
 - Copy the example inventory files to your container workspace:
 
   ```bash
-  # you can use `make example-l3ls` instead
+  # you can use `make example-l3ls-install` instead
   avd ➜ ~ $ cp -r /home/avd/.ansible/collections/ansible_collections/arista/avd/examples/single-dc-l3ls/* .
   avd ➜ ~ $ ls
   README.md  ansible.cfg  build.yml  deploy-cvp.yml  deploy.yml  documentation  group_vars  images  intended  inventory.yml  switch-basic-configurations
@@ -589,6 +633,31 @@ $ ansible-inventory --graph
 
 </div>
 </div>
+
+---
+
+# Git Init Your Inventory
+
+<style scoped>section {font-size: 22px;}</style>
+
+![bg right:30% fit](img/Git-Logo-1788C.png)
+
+- Use VSCode [source control](https://code.visualstudio.com/docs/sourcecontrol/overview) to git init your inventory
+- You can use CLI instead:
+
+```bash
+# configure user.name and email if not yet set
+git config user.email "avd@lab.net"
+git config user.name "AVD lab user"
+# git init your repo, add and commit all files
+git init
+git add .gitignore
+git add *
+git commit -m "init"
+```
+
+- You can now use `git diff` or VSCode source control to inspect the changes
+- Commit your changes any time with `git commit -m "<any-message>"`
 
 ---
 
