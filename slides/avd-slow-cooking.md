@@ -719,9 +719,254 @@ rm group_vars/DC1_L2_LEAVES.yml
 
 `Step 3`
 
-# Variables
+# YAML and Variables
 
 ![bg left:40%](img/pexels-pixabay-270700.jpg)
+
+---
+
+# What is YAML?
+
+<style scoped>section {font-size: 20px;}</style>
+<style scoped>code {font-size: 10px;}</style>
+
+<div class="columns">
+<div>
+
+- YAML is a data serialization language.
+- It is not the only one. There are many others: JSON, XML, TOML, INI, CSV etc.
+- Purpose:
+  > convert data to a machine-readable format that can be stored or transmitted.
+- YAML is generally considered to be a human-readable format. It's not that simple 🤓, but it's possible to add comments.
+- YAML is the default format to write Ansible playbooks, inventory files and group/host variables.
+
+</div>
+<div>
+
+The playbook used to generate configs for this workshop in YAML format:
+
+```yaml
+---
+# build.yml
+
+- name: Build Configurations and Documentation # (1)!
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+
+    - name: Generate AVD Structured Configurations and Fabric Documentation # (2)!
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+
+    - name: Generate Device Configurations and Documentation # (3)!
+      ansible.builtin.import_role:
+        name: arista.avd.eos_cli_config_gen
+```
+
+</div>
+</div>
+
+---
+
+# JSON and XML Examples
+
+<style scoped>section {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+ATD KVM virtual machine specification in XML:
+
+```xml
+arista@devbox:~$ sudo virsh dumpxml cvp1
+setlocale: No such file or directory
+<domain type='kvm' id='1'>
+  <name>cvp1</name>
+  <uuid>4675315f-0b93-4798-8598-37d876666df9</uuid>
+  <memory unit='KiB'>33554432</memory>
+  <currentMemory unit='KiB'>33554432</currentMemory>
+  <vcpu placement='static'>24</vcpu>
+  <resource>
+    <partition>/machine</partition>
+  </resource>
+  <os>
+    <type arch='x86_64' machine='pc-i440fx-rhel7.0.0'>hvm</type>
+    <boot dev='hd'/>
+  </os>
+...
+```
+
+</div>
+<div>
+
+The devcontainer specification powering this workshop:
+
+```json
+{
+    "image": "ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3",
+    "remoteUser": "avd",
+    "onCreateCommand": "mkdir -p /home/avd/playground",
+    "workspaceFolder": "/home/avd/playground",
+    "workspaceMount": "source=avd-playground,target=/home/avd/playground,type=volume"
+}
+```
+
+> In fact, dev container spec is written in JSONC.
+  JSON is not allowing comments and focused on machine readability.  
+  JSONC is a JSON with comments. It is not a standard, but supported by many tools.
+
+</div>
+</div>
+
+---
+
+# YAML Linter
+
+<style scoped>section {font-size: 20px;}</style>
+
+- `Linter` is a tool that checks the code/document for errors, bugs, style violations etc.
+- Install YAML-linter on your machine: `pip install --user yamllint`
+- Create a minimalistic YAML file: `echo -n "key: value" > test.yaml`
+- Run the linter to check errors:
+
+```bash
+vscode ➜ /workspaces/avd-extended-workshop (main) $ yamllint test.yaml
+test.yaml
+1:1       warning  missing document start "---"  (document-start)
+1:11      error    no new line character at the end of file  (new-line-at-end-of-file)
+```
+
+- Congrats! 🎉 We have two errors in a single line YAML. :upside_down_face:
+- Linters are helpful! Always check your YAMLs with a CLI linter or VSCode/other IDE extension.
+
+---
+
+# Every YAML Starts with `---`
+
+<style scoped>section {font-size: 20px;}</style>
+
+- Every YAML file must start with `---` on the first line.
+- YAMLs without `---` are not valid, but can be accepted by many tools.
+- Quote from [yaml.org](https://yaml.org/spec/1.2.2/):
+  > YAML uses three dashes (“---”) to separate directives from document content. This also serves to signal the start of a document if no directives are present. Three dots ( “...”) indicate the end of a document without starting a new one, for use in communication channels.
+- Another `---` in the same yaml file would indicate the start of a new document. It is not used in Ansible data structures normally.
+- Every YAML file must end with an empty line.
+
+  > There are many more rules in YAML that are rarely in use, but must be 💯% respected.
+
+---
+
+# JSON vs YAML for Ansible
+
+<style scoped>section {font-size: 22px;}</style>
+
+- Ansible can accept variables in JSON format as well.
+- Convert a group var file to JSON with `yq`
+
+  ```bash
+  yq --prettyPrint -o=json group_vars/DC1.yml > group_vars/DC1.json
+  ```
+
+- Delete the YAML file and run the build playbook:
+
+  ```bash
+  ansible-playbook build.yml
+  ```
+
+- New configs will be generated successfully.
+- JSON can be useful for performance, machine processing, troubleshooting.
+- Rollback the change once you test it.
+
+---
+
+# YAML Scalars, Mappings and Sequences
+
+<style scoped>section {font-size: 20px;}</style>
+<style scoped>code {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+- YAML allows writing comments after `#`. Always add comments!
+- YAML smallest building block is called `scalar`. That can be integer, string, boolean etc.
+
+  ```yaml
+  #     
+  key: "value"
+  #     ^
+  # this is a scalar   
+  ```
+
+</div>
+<div>
+
+- The data can be defined in YAML as `mappings` (aka dictionaries)
+
+  ```yaml
+  a_key: a_value
+  another_key: another_value
+  nested:
+    sub_key: sub_value
+  ```
+
+- Or `sequences` (aka lists):
+
+    ```yaml
+    - item1
+    - item2
+    - item3
+    ```
+
+- Sequences can be defined in a single line as well and used in conjunction with mappings:
+
+  ```yaml
+  values: [ value1, value2, value3 ]
+  ```
+
+</div>
+</div>
+
+---
+
+# YAML Advanced Features
+
+<style scoped>section {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+- YAML has some advanced features. Try to avoid the unless it is absolutely necessary.
+- Example: anchors and aliases.
+- Check [YAML specification](https://yaml.org/spec/1.2.2/) for details if interested.
+- However multiline strings are often required in AVD:
+
+</div>
+<div>
+
+```yaml
+#  a string with new lines and trailing spaces
+string_with_new_lines: |
+  This is a string    
+  with new lines
+  and trailing spaces
+# a string without new lines and with trailing spaces
+string_without_new_lines: >
+  This is a string     
+  without new lines
+  and with trailing spaces
+```
+
+Result:
+
+```json
+{
+  "string_with_new_lines": "This is a string    \nwith new lines\nand trailing spaces",
+  "string_without_new_lines": "This is a string      without new lines and with trailing spaces",
+}
+```
+
+</div>
+</div>
 
 ---
 
