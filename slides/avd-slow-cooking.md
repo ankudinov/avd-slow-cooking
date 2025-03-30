@@ -779,6 +779,259 @@ a_better_null: ~
 
 ---
 
+# Ansible Inventory is Machine-Readable
+
+<style scoped>section {font-size: 20px;}</style>
+<style scoped>code {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+- YAML is not plain text
+- Everything that is coded as YAML, can be converted into JSON, replaced with JSON or any other machine readable data source
+- Data can be processed by a number of tools:
+  - Ansible
+  - jq
+  - yq
+  - Python scripts
+  - etc.
+- Useful commands:
+  - `ansible-inventory --list`
+  - `ansible-inventory --list --yaml`
+  - `ansible-inventory --host <hostname>`
+
+</div>
+<div>
+
+```bash
+$ ansible-inventory --host dc1-leaf1a | jq ".. | .svis? | select(.)"
+-vvvv to see details
+[
+  {
+    "enabled": true,
+    "id": 11,
+    "ip_address_virtual": "10.10.11.1/24",
+    "name": "VRF10_VLAN11"
+  },
+  {
+    "enabled": true,
+    "id": 12,
+    "ip_address_virtual": "10.10.12.1/24",
+    "name": "VRF10_VLAN12"
+  }
+]
+[
+  {
+    "enabled": true,
+    "id": 21,
+    "ip_address_virtual": "10.10.21.1/24",
+    "name": "VRF11_VLAN21"
+  },
+  {
+    "enabled": true,
+    "id": 22,
+    "ip_address_virtual": "10.10.22.1/24",
+    "name": "VRF11_VLAN22"
+  }
+]
+...
+```
+
+</div>
+</div>
+
+---
+
+# Vars Structure
+
+<style scoped>section {font-size: 18px;}</style>
+
+![bg right fit](img/ansible-repo-struct.png)
+
+- Structure group vars in a meaningful way
+- Example
+
+  ```bash
+  all # <- Empty or general Ansible settings
+  |- CV_SERVERS # <- Cloudvision/Terminattr settings
+  |- AVD_FABRIC # <- "Fabric" wide settings
+     |- LOCATION_A
+     |- LOCATION_A_MGMT
+     |... # other locations
+     |- LOCATION_A_TENANTS
+     |- LOCATION_A_ENDPOINTS # usually a directory
+  ```
+
+- Be careful with hostvars as `eos_designs` has full control over structured configs
+  - Use `custom_structured` to override
+
+---
+
+# Working with Big Data Structures in AVD
+
+- Some data structures in AVD can be huge. Best example is port provisioning `servers:` can grow really fast in production.
+- YAML with let's say 20K lines is not very human friendly.
+- To simplify provisioning new servers, you can:
+  - Split the port provisioning YAML into multiple files
+  - Use some helper script/tools to work with complex data structures
+
+---
+
+# How to Split AVD Servers into Multiple Files
+
+<style scoped>section {font-size: 14px;}</style>
+
+- Ansible allows splitting group vars into multiple files. For example ATD_SERVERS group vars could be a directory:
+
+```text
+AVD_ENDPOINTS
+|- main.yml
+|- leaf_endpoints.yml
+|- mgmt_endpoints.yml
+# ... etc
+```
+
+- The problem with this approach is that when Ansible will encounter the same key in different YAMLs, it will overwrite the value. That means if `server:` is defined everywhere only the last occurrence wins.
+- AVD allows to define [`connected_endpoints_keys:`](https://avd.arista.com/4.10/roles/eos_designs/docs/input-variables.html?h=connected_endpoints_keys#connected-endpoints-keys-settings) that can be used to solve the problem above.
+- Split is ofter per-MLAG
+
+```yaml
+---
+connected_endpoints_keys:
+  - key: servers
+    type: server
+  - key: leaf_endpoints
+    type: server
+  - key: mgmt_endpoints
+    type: server
+```
+
+```yaml
+---
+leaf_endpoints:
+  - name: l01_l02_e1
+# ... etc
+```
+
+---
+
+# Hands-on: Change Connected Endpoints
+
+<style scoped>section {font-size: 20px;}</style>
+
+![bg right:20%](img/demo-time.jpeg)
+
+```bash
+mkdir group_vars/CONNECTED_ENDPOINTS
+cat <<EOF > group_vars/CONNECTED_ENDPOINTS/main.yml
+---
+connected_endpoints_keys:
+  - key: servers
+    type: server
+  - key: dc1-leaf1-endpoints
+    type: server
+  - key: dc1-leaf2-endpoints
+    type: server
+EOF
+yq eval 'del(.servers[] | select(.name == "dc1-leaf2-server1"))' group_vars/CONNECTED_ENDPOINTS.yml > group_vars/CONNECTED_ENDPOINTS/dc1-leaf1-endpoints.yml
+yq -i '.dc1-leaf1-endpoints = .servers | del(.servers)' group_vars/CONNECTED_ENDPOINTS/dc1-leaf1-endpoints.yml
+yq eval 'del(.servers[] | select(.name == "dc1-leaf1-server1"))' group_vars/CONNECTED_ENDPOINTS.yml > group_vars/CONNECTED_ENDPOINTS/dc1-leaf2-endpoints.yml
+yq -i '.dc1-leaf2-endpoints = .servers | del(.servers)' group_vars/CONNECTED_ENDPOINTS/dc1-leaf2-endpoints.yml
+rm group_vars/CONNECTED_ENDPOINTS.yml
+```
+
+---
+
+`Step 4`
+
+# Playbooks
+
+![bg left:40%](img/pexels-michaelm1755-4714924.jpg)
+
+---
+
+# Ansible Playbook
+
+<style scoped>section {font-size: 20px;}</style>
+<style scoped>code {font-size: 20px;}</style>
+
+<div class="columns">
+<div>
+
+- Ansible playbook is a YAML file that defines a set of tasks to be executed on a set of hosts.
+- A playbook consists of one or more `plays`.
+- Every play consists of one or more `tasks` using specific `modules` with or without parameters.
+- Example playbook uses following modules:
+  - [arista.eos](https://github.com/ansible-collections/arista.eos)
+  - [arista.eos.eos_banner](https://github.com/ansible-collections/arista.eos/blob/main/plugins/modules/eos_banner.py)
+
+</div>
+<div>
+
+```yaml
+---
+# a playbook to configure banner on EOS switches
+- name: Configure banner on EOS switches  # <-- Play
+  hosts: ATD_FABRIC  # <-- Target hosts
+  tasks:
+    - name: Gather facts  # <-- Task
+      arista.eos.eos_facts:  # <-- Module
+        gather_subset: all  # <-- Module parameter
+      register: facts
+    - name: Check facts output
+      debug:
+        msg: "{{ facts }}"
+    - name: Configure login banner
+      arista.eos.eos_banner:
+        banner: motd
+        text: |
+          "{{ banner_text }}"
+        state: present
+```
+
+</div>
+</div>
+
+---
+
+# Ansible Playbook Arguments
+
+<style scoped>section {font-size: 18px;}</style>
+
+- `ansible-playbook` command has number of useful arguments that can be used to control the execution.
+- We'll highlight few of them:
+  - `--check` - run the playbook in check mode. No changes will be applied.
+  - `--diff` - show the diff of the changes that will be applied.
+  - `--limit` - limit the execution to specific hosts or groups.
+  - `--tags` - limit the execution to the tasks with specific tags
+    - AVD is [removing tags support in 5.0](https://avd.arista.com/devel/docs/porting-guides/5.x.x.html#removal-ansible-tags-from-avd-roles) ❗
+    - Ansible [playbook tags](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tags.html) are not extremely useful as well
+  - `--forks` - limit the number of parallel tasks, default is 5.
+  - `--verbose` - increase the verbosity level. Up to -vvvvvv. Helps to troubleshoot the playbook execution. But not a lot. 🥹
+- Example:
+
+  ```bash
+  ansible-playbook playbooks/deploy_banner.yml --check --diff --limit leaf1 -vvv
+  ```
+
+---
+
+# What Playbooks Do You Need
+
+<style scoped>section {font-size: 18px;}</style>
+
+![bg right fit](img/ansible-repo-struct.png)
+
+- Don't be shy to create multiple playbooks to cover different use cases
+- Examples:
+  - Build configs. It's a great idea to keep it separate from deploy!
+  - Build configs for specific network location. For example, single DC in a multi-DC network
+  - Deploy configs using CVP/CVaaS
+  - Deploy configs using eAPI
+  - ANTA tests
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
