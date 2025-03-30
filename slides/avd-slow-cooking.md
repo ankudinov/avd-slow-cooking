@@ -715,6 +715,70 @@ rm group_vars/DC1_L2_LEAVES.yml
 
 ---
 
+`Step 3`
+
+# Variables
+
+![bg left:40%](img/pexels-pixabay-270700.jpg)
+
+---
+
+# Quote All The Strings
+
+<style scoped>section {font-size: 18px;}</style>
+
+<div class="columns">
+<div>
+
+- A wisdom from the unknown source:
+  > Experienced YAML users quote all the strings.
+- YAML is flexible and not forcing you to quote strings. But that is often causing weird problems.
+- If not certain, quote the string!
+- That is especially important when working with Ansible. As Ansible has it's own way of interpreting certain YAML values.
+- Use following to verify your YAML:
+
+  ```bash
+  yq --prettyPrint -o=json <name-of-your-yaml-file>
+  ```
+
+</div>
+<div>
+
+Is this YAML correct?
+
+```yaml
+port_channel:
+  mode: on
+```
+
+It is. But it will break Ansible playbook execution as `on` and `yes` are converted to `True` by Ansible.
+
+```text
+ERROR! [leaf1]: 'Validation Error: servers[0].adapters[0].port_channel.mode': True is not of type 'str'
+ERROR! [leaf1]: 'Validation Error: servers[0].adapters[0].port_channel.mode': 'True' is not one of ['active', 'passive', 'on']
+```
+
+Fun with YAML
+
+```yaml
+string: "just a string"
+integer: 1234
+and_that_is_an_integer_too: 0xABCD
+float: 12.34
+version: "1.0" # is a string
+boolean: true
+# that's super weird, don't do that
+but_that_is_a_string: !!str True
+# there is a special `null` value for this case
+and_this_is_not_empty:
+a_better_null: ~
+```
+
+</div>
+</div>
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
