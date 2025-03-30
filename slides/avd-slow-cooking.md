@@ -378,7 +378,7 @@ docker run hello-world
 
   ```bash
   # use ~/.bashrc if ZSH is not installed
-  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh -c \"wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/Makefile\?cache_bust\=cafe -O Makefile;zsh\""' >> ~/.zshrc
+  echo 'alias avd="docker run --rm -it -w /home/avd ghcr.io/aristanetworks/avd/universal:python3.11-avd-v5.2.3 zsh -c \"mkdir playground;cd playground;wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/Makefile\?timestamp\=$(date -u +"%Y%m%d") -O Makefile;zsh\""' >> ~/.zshrc
   ```
 
 - Start AVD container in interactive mode:

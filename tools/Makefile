@@ -6,9 +6,7 @@ help: ## Display help message
 
 .PHONY: example-l3ls
 example-l3ls: ## copy AVD single DC l3ls example to the current directory
-	mkdir $(CURRENT_DIR)/single-dc-l3ls
-	cp -r /home/avd/.ansible/collections/ansible_collections/arista/avd/examples/single-dc-l3ls/* $(CURRENT_DIR)/single-dc-l3ls
-	cd $(CURRENT_DIR)/single-dc-l3ls
+	cp -r /home/avd/.ansible/collections/ansible_collections/arista/avd/examples/single-dc-l3ls/* $(CURRENT_DIR)
 
 .PHONY: install-yq
 install-yq: ## Install yq tool
