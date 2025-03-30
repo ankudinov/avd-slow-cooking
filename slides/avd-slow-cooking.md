@@ -1227,6 +1227,22 @@ Multiple Repositories Advantages
 
 ---
 
+# AVD is Data
+
+<style scoped>section {font-size: 24px;}</style>
+
+![bg right:30% fit](img/vscode-search.png)
+
+- AVD provides a lot of data about your network
+- Search the data when troubleshooting or looking for a specific variable value
+- Query and process the data with any tool or script
+- AVD auto generates doc on every build and test reports after network validation
+  - You can publish AVD generated docs using [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) or similar framework
+  - Craft your own docs, reports etc. based on available data
+- This becomes more powerful at scale.
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
