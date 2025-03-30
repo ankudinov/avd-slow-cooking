@@ -1049,6 +1049,14 @@ rm group_vars/CONNECTED_ENDPOINTS.yml
 
 ---
 
+`Step 5`
+
+# Quality of Life
+
+![bg left:40%](img/pexels-anacardia-2645245.jpg)
+
+---
+
 # eos_cli
 
 <style scoped>section {font-size: 18px;}</style>
