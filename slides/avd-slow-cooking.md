@@ -1488,6 +1488,68 @@ Multiple Repositories Advantages
 
 ---
 
+# ![h:70](img/Git-Logo-1788C.png) Key Concepts and Branching
+
+![bg right:40% fit](img/git-intro.png)
+
+<style scoped>section {font-size: 22px;}</style>
+
+- Branch is a pointer to a specific commit
+- git branch command lists all branches in the repository
+- You can switch between branches with `git checkout <branch-name>` when there are no uncommitted changes.
+- `Trunk` is another name for the default branch (also called Master or Main)
+- Understanding Git and solid branching strategy is key to success!
+
+```bash
+# change the default branch name to main
+git config --global init.defaultBranch main
+```
+
+---
+
+# Branch Naming Convention
+
+<style scoped>section {font-size: 18px;}</style>
+
+- You can name your branches in any way. But it's better to have a naming convention from the start.
+- Branch naming convention is a set of rules that describes how to name branches.
+- This simplifies collaboration, reviews and CI pipelines.
+- Some common branch naming prefixes are listed below:
+  - `feature/` - a branch that is used to work on some new features or changes
+  - `fix/` - a branch that is used to fix a bug or implement a workaround. Normally it corresponds to an issue. This can be further divided into 
+    - `bugfix/` - planned bug fixes
+    - `hotfix/` - urgent bug fixes, may lack planning
+    - `docsfix/` - fixes in the documentation
+  - `refactor/` - a branch that is used to refactor/optimize the code
+  - `docs/` - for documentation changes
+  - `test/` - a temporary branch uses for testing only and normally not merged anywhere
+  - `release/` - a special branch that is used to prepare a release
+- The full branch name normally looks like `<prefix>/<description>` or `prefix_description`.
+- Use any convention that works, but be consistent!
+
+---
+
+# Git Branching Strategy
+
+<style scoped>section {font-size: 18px;}</style>
+
+- A branching strategy is a convention that describes when and how branches are created, merged and deleted.
+- It's essential to keep stable and predictable Git repository state.
+- There are many branching strategies:
+  - [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+  - [Trunk-based development](https://trunkbaseddevelopment.com/)
+  - [GitHub flow](https://guides.github.com/introduction/flow/)
+  - [GitLab flow](https://docs.gitlab.com/ee/topics/gitlab_flow.html)
+  - [Feature Branch](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
+  - etc.
+- A simple version of trunk-based development usually works well for AVD:
+  - Trunk branch is the designed state of the network
+  - For every change create a short lived feature branch, generate new configs, review and merge as soon as possible
+  - Create a release branch when ready and deploy
+  - Rollback to an older release branch in case of problems
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
