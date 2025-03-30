@@ -116,6 +116,8 @@ footer: '![h:20](https://www.arista.com/assets/images/logo/Arista_Logo.png)'
   - understand the rules of the game
   - <ins>buy AVD support</ins> when you can or have higher requirements
 
+> 💡 `AVD != Ansible`. CVP integration is coming.
+
 ---
 
 # Short AVD Workflow Demo
@@ -1110,6 +1112,10 @@ Multiple Repositories Advantages
 
 </div>
 </div>
+
+---
+
+
 
 ---
 
