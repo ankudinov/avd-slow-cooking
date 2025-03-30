@@ -1550,6 +1550,18 @@ git config --global init.defaultBranch main
 
 ---
 
+# Get a Better Lab
+
+<style scoped>section {font-size: 18px;}</style>
+
+> Once upon a time in ancient Egypt a man was building a datacenter. But virtual labs did not exist back then. He failed and was cursed by gods … 𓀨𓁛𓀏 <-- ancient server rack on the left
+
+- Always have a lab environment in hand when you want to test something! It MUST take minutes to spin.
+- EVE-NG is good. KVM or [Containerlab](https://containerlab.dev/) is better!
+- Check a [short cLab workshop here](https://arista-netdevops-community.github.io/one-click-se-demos/clab-build-containerlab-with-ceos/)
+
+---
+
 # Q&A
 
 ![bg left](img/pexels-valeriia-miller-3020919.jpg)
