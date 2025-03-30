@@ -85,7 +85,7 @@ def load_extra_vars(data_input_directory):
 if __name__ == "__main__":
 
     default_template_dir = '.cp'
-    default_input_dir = '.cp/extra-vars/default'
+    default_input_dir = '.cp/extra-vars'
     temp_template_dir = '.cp-temp'
 
     # get directory to load extra context

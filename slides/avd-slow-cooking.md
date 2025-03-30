@@ -1149,6 +1149,49 @@ Multiple Repositories Advantages
 
 ---
 
+# Add Some Python Souse
+
+<style scoped>section {font-size: 12px;}</style>
+
+![bg right:25%](img/pexels-anntarazevich-6937476.jpg)
+
+- Install [Copier](https://copier.readthedocs.io/en/stable/faq/) and download a very simple Python script
+
+  ```bash
+  pip install copier
+  wget https://raw.githubusercontent.com/ankudinov/avd-slow-cooking/refs/heads/master/tools/cp.py
+  chmod +x cp.py
+  ```
+
+- Prepare Copier file tree
+
+  ```bash
+  mkdir -p .cp/group_vars
+  mkdir -p .cp/extra-vars
+  echo "id,name\n3401,L2_VLAN3401\n3402,L2_VLAN3402" > .cp/extra-vars/vlan_list.csv
+  echo "---\n_exclude: [extra-vars, copier.yml]" > .cp/copier.yml
+  ```
+
+- Move network services
+
+  ```bash
+  mv group_vars/NETWORK_SERVICES.yml .cp/group_vars/NETWORK_SERVICES.yml.jinja
+  ```
+
+- Update `l2vlans` section
+
+  ```jinja
+      l2vlans:
+  {%-     for vlan in vlan_list %}
+        - id: {{ vlan.id }}
+          name: {{ vlan.name }}
+  {%-     endfor %}
+  ```
+
+- Add few more VLANs to CSV and build services with `./cp.py`
+
+---
+
 # AVD, CloudVision and Netbox
 
 ![bg right:25%](img/demo-time.jpeg)
